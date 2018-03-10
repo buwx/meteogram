@@ -14,9 +14,9 @@ TITLE_SHORT=Stuttgart/Echt.
 LON=9.22
 LAT=48.68
 
-zcat data/MOSMIX_S_LATEST_240.kmz | xsltproc --stringparam station "${STATION}" --stringparam title "${TITLE}" \
-    --stringparam titleShort "${TITLE_SHORT}" --stringparam lon "${LON}" \
-    --stringparam lat "${LAT}" mos-json.xsl - > data/${STATION}.json
+zcat data/MOSMIX_S_LATEST_240.kmz | xsltproc --stringparam station "${STATION}" \
+    --stringparam title "${TITLE}" --stringparam titleShort "${TITLE_SHORT}" \
+    --stringparam lon "${LON}" --stringparam lat "${LAT}" mos-json.xsl - > data/${STATION}.json
 
 # view meteogram.html
 ```
