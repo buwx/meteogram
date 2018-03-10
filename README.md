@@ -3,10 +3,11 @@ JavaScript Meteogram from DWD data
 
 TODO:
 
-1. get the latest MOSMOX-data from the OpenData server
+```
+# get the latest MOSMOX-data from the OpenData server
 wget -N -P data https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_S_LATEST_240.kmz
 
-2. run the xsl transformation with the specified parameters
+# run the xsl transformation with the specified parameters
 STATION=10738
 TITLE=Stuttgart/Echterdingen
 TITLE_SHORT=Stuttgart/Echt.
@@ -17,6 +18,7 @@ zcat data/MOSMIX_S_LATEST_240.kmz | xsltproc --stringparam station "${STATION}" 
     --stringparam titleShort "${TITLE_SHORT}" --stringparam lon "${LON}" \
     --stringparam lat "${LAT}" mos-json.xsl - > data/${STATION}.json
 
-3. view meteogram.html
+# view meteogram.html
+```
 
 For more information see the service description on https://www.dwd.de/DE/leistungen/opendata/neuigkeiten/opendata_mar2018_01.html and my weather page https://buwx.de
