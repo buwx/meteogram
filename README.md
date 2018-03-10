@@ -4,7 +4,7 @@ JavaScript Meteogram from DWD data
 TODO:
 
 ```
-# get the latest MOSMOX-data from the OpenData server
+# get the latest MOSMIX-data from the OpenData server
 wget -N -P data https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_S_LATEST_240.kmz
 
 # run the xsl transformation with the specified parameters
