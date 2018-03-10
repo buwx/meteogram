@@ -1,0 +1,779 @@
+<script src="http://buwx.de/libraries/jquery/3.2.1/jquery.min.js"></script>
+<script src="http://buwx.de/libraries/custom/sun.js"></script>
+<script src="http://buwx.de/highcharts/code/highcharts.js"></script>
+<script src="http://buwx.de/highcharts/code/modules/windbarb.js"></script>
+<script src="http://buwx.de/highcharts/code/modules/exporting.js"></script>
+
+<div id="dwd_container" style="height: 320px; margin: 0 auto">
+    <div style="margin-top: 100px; text-align: center" id="loading">
+        <i class="fa fa-spinner fa-spin"></i> Lade Wetterdaten...
+    </div>
+</div>
+
+<script type="text/javascript">
+
+var ww_messages = {
+      '10': 'feuchter Dunst',
+      '11': 'Schwaden von Bodennebel',
+      '12': 'durchgehender Bodennebel',
+      '13': 'Wetterleuchten sichtbar, kein Donner gehört',
+      '14': 'Niederschlag im Gesichtskreis, nicht den Boden erreichend',
+      '15': 'Niederschlag in der Ferne, aber nicht an der Station',
+      '16': 'Niederschlag in der Nähe, aber nicht an der Station',
+      '17': 'Gewitter, aber kein Niederschlag an der Station',
+      '18': 'Markante Böen im Gesichtskreis, aber kein Niederschlag an der Station',
+      '19': 'Tromben im Gesichtskreis',
+      '20': 'nach Sprühregen oder Schneegriesel',
+      '21': 'nach Regen',
+      '22': 'nach Schneefall',
+      '23': 'nach Schneeregen oder Eiskörnern',
+      '24': 'nach gefrierendem Regen',
+      '25': 'nach Regenschauer',
+      '26': 'nach Schneeschauer',
+      '27': 'nach Graupel- oder Hagelschauer',
+      '28': 'nach Nebel',
+      '29': 'nach Gewitter',
+      '30': 'leichter oder mäßiger Sandsturm, an Intensität abnehmend',
+      '31': 'leichter oder mäßiger Sandsturm, unveränderte Intensität',
+      '32': 'leichter oder mäßiger Sandsturm, an Intensität zunehmend',
+      '33': 'schwerer Sandsturm, an Intensität abnehmend',
+      '34': 'schwerer Sandsturm, unveränderte Intensität',
+      '35': 'schwerer Sandsturm, an Intensität zunehmend',
+      '36': 'leichtes oder mäßiges Schneefegen, unter Augenhöhe',
+      '37': 'starkes Schneefegen, unter Augenhöhe',
+      '38': 'leichtes oder mäßiges Schneetreiben, über Augenhöhe',
+      '39': 'starkes Schneetreiben, über Augenhöhe',
+      '40': 'Nebel in einiger Entfernung',
+      '41': 'Nebel in Schwaden oder Bänken',
+      '42': 'Nebel, Himmel erkennbar, dünner werdend',
+      '43': 'Nebel, Himmel nicht erkennbar, dünner werdend',
+      '44': 'Nebel, Himmel erkennbar, unverändert',
+      '45': 'Nebel, Himmel nicht erkennbar, unverändert',
+      '46': 'Nebel, Himmel erkennbar, dichter werdend',
+      '47': 'Nebel, Himmel nicht erkennbar, dichter werdend',
+      '48': 'Nebel mit Reifansatz, Himmel erkennbar',
+      '49': 'Nebel mit Reifansatz, Himmel nicht erkennbar',
+      '50': 'unterbrochener leichter Sprühregen',
+      '51': 'durchgehend leichter Sprühregen',
+      '52': 'unterbrochener mäßiger Sprühregen',
+      '53': 'durchgehend mäßiger Sprühregen',
+      '54': 'unterbrochener starker Sprühregen',
+      '55': 'durchgehend starker Sprühregen',
+      '56': 'leichter gefrierender Sprühregen',
+      '57': 'mäßiger oder starker gefrierender Sprühregen',
+      '58': 'leichter Sprühregen mit Regen',
+      '59': 'mäßiger oder starker Sprühregen mit Regen',
+      '60': 'unterbrochener leichter Regen oder einzelne Regentropfen',
+      '61': 'durchgehend leichter Regen',
+      '62': 'unterbrochener mäßiger Regen',
+      '63': 'durchgehend mäßiger Regen',
+      '64': 'unterbrochener starker Regen',
+      '65': 'durchgehend starker Regen',
+      '66': 'leichter gefrierender Regen',
+      '67': 'mäßiger oder starker gefrierender Regen',
+      '68': 'leichter Schneeregen',
+      '69': 'mäßiger oder starker Schneeregen',
+      '70': 'unterbrochener leichter Schneefall oder einzelne Schneeflocken',
+      '71': 'durchgehend leichter Schneefall',
+      '72': 'unterbrochener mäßiger Schneefall',
+      '73': 'durchgehend mäßiger Schneefall',
+      '74': 'unterbrochener starker Schneefall',
+      '75': 'durchgehend starker Schneefall',
+      '76': 'Eisnadeln (Polarschnee)',
+      '77': 'Schneegriesel',
+      '78': 'Schneekristalle',
+      '79': 'Eiskörner (gefrorene Regentropfen)',
+      '80': 'leichter Regenschauer',
+      '81': 'mäßiger oder starker Regenschauer',
+      '82': 'äußerst heftiger Regenschauer',
+      '83': 'leichter Schneeregenschauer',
+      '84': 'mäßiger oder starker Schneeregenschauer',
+      '85': 'leichter Schneeschauer',
+      '86': 'mäßiger oder starker Schneeschauer',
+      '87': 'leichter Graupelschauer',
+      '88': 'mäßiger oder starker Graupelschauer',
+      '89': 'leichter Hagelschauer',
+      '90': 'mäßiger oder starker Hagelschauer',
+      '91': 'Gewitter in der letzten Stunde, zurzeit leichter Regen',
+      '92': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Regen',
+      '93': 'Gewitter in der letzten Stunde, zurzeit leichter Schneefall/Schneeregen/Graupel/Hagel',
+      '94': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Schneefall/Schneeregen/Graupel/Hagel',
+      '95': 'leichtes oder mäßiges Gewitter mit Regen oder Schnee',
+      '96': 'leichtes oder mäßiges Gewitter mit Graupel oder Hagel',
+      '97': 'starkes Gewitter mit Regen oder Schnee',
+      '98': 'starkes Gewitter mit Sandsturm',
+      '99': 'starkes Gewitter mit Graupel oder Hagel'
+  }
+
+  function directionText(speed, deg) {
+      if (speed == 0) {
+          return "";
+      }
+      else if (deg >= 11.25 && deg < 33.75) {
+          return "NNO";
+      }
+      else if (deg >= 33.75 && deg < 56.25) {
+          return "NO";
+      }
+      else if (deg >= 56.25 && deg < 78.75) {
+          return "ONO";
+      }
+      else if (deg >= 78.75 && deg < 101.25) {
+          return "O";
+      }
+      else if (deg >= 101.25 && deg < 123.75) {
+          return "OSO";
+      }
+      else if (deg >= 123.75 && deg < 146.25) {
+          return "SO";
+      }
+      else if (deg >= 146.25 && deg < 168.75) {
+          return "SSO";
+      }
+      else if (deg >= 168.75 && deg < 191.25) {
+          return "S";
+      }
+      else if (deg >= 191.25 && deg < 213.75) {
+          return "SSW";
+      }
+      else if (deg >= 213.75 && deg < 236.25) {
+          return "SW";
+      }
+      else if (deg >= 236.25 && deg < 258.75) {
+          return "WSW";
+      }
+      else if (deg >= 258.75 && deg < 281.25) {
+          return "W";
+      }
+      else if (deg >= 281.25 && deg < 303.75) {
+          return "WNW";
+      }
+      else if (deg >= 303.75 && deg < 326.25) {
+          return "NW";
+      }
+      else if (deg >= 326.25 && deg < 348.75) {
+          return "NNW";
+      }
+      else {
+          return "N"; 
+      }
+  }
+
+  /**
+   * Meteogram derived by Highcharts meteogram demo for using DWD MESOMIX data.
+   */
+  function Meteogram(dwd, container) {
+      this.temperature = [];
+      this.dewpoint = [];
+      this.pressure = [];
+      this.precipitation = [];
+      this.wind = [];
+      this.sunshine = [];
+
+      this.temperature_short = [];
+      this.dewpoint_short = [];
+      this.pressure_short = [];
+      this.precipitation_short = [];
+      this.wind_short = [];
+      this.sunshine_short = [];
+
+      this.wmo_n = [];
+      this.wmo_ww = [];
+
+      this.plotbands = [];
+
+      // Initialize
+      this.dwd = dwd;
+      this.container = container;
+
+      // Run
+      this.parseDwdData();
+  }
+
+  /**
+   * Draw the weather symbols.
+   */
+  Meteogram.prototype.drawWmoSymbols = function (chart) {
+      var meteogram = this;
+
+      jQuery.each(meteogram.wmo_n, function (i, wmo) {
+          if (wmo.image) {
+              wmo.image.destroy();
+              wmo.image = null;
+          }
+      });
+      jQuery.each(meteogram.wmo_ww, function (i, wmo) {
+          if (wmo.image) {
+              wmo.image.destroy();
+              wmo.image = null;
+          }
+      });
+
+      var size = Math.min(10, chart.plotWidth / chart.series[0].data.length);
+      jQuery.each(chart.series[0].data, function (i, point) {
+          if (!meteogram.wmo_n[i].image) {
+              var image = chart.renderer.image(
+                  'http://buwx.de/charts/meteogram/wmo/n/' + meteogram.wmo_n[i].n + '.svg',
+                   point.plotX + chart.plotLeft - size/2,
+                   chart.plotTop + chart.plotHeight + size/2,
+                   size, size
+              )
+              .attr({
+                  zIndex: 5
+               })
+               .add();
+               meteogram.wmo_n[i].image = image;
+          }
+          if (!meteogram.wmo_ww[i].image && meteogram.wmo_ww[i].ww) {
+              var image = chart.renderer.image(
+                  'http://buwx.de/charts/meteogram/wmo/ww/' + meteogram.wmo_ww[i].ww + '.svg',
+                   point.plotX + chart.plotLeft - size/2,
+                   point.plotY + chart.plotTop - 15,
+                   size, size
+              )
+              .attr({
+                  zIndex: 5
+               })
+               .add();
+               meteogram.wmo_ww[i].image = image;
+          }
+      });
+  }
+
+  Meteogram.prototype.getChartOptions = function () {
+      var meteogram = this;
+
+      return {
+          chart: {
+              renderTo: this.container,
+              marginBottom: 70,
+              marginRight: 40,
+              marginTop: 50,
+              plotBorderWidth: 1,
+              height: 320,
+              alignTicks: false,
+              plotBackgroundColor: '#fffdf0',
+              events: {
+                  redraw: function () {
+                      meteogram.drawWmoSymbols(this);
+                  }
+              }
+          },
+
+          time: {
+              useUTC: false
+          },
+
+          title: {
+              text: 'Vorhersage für ' + this.dwd.station.title,
+              align: 'left'
+          },
+
+          credits: {
+              text: 'Quelle: Deutscher Wetterdienst (' + this.dwd.productId + ')',
+              href: 'https://www.dwd.de/opendata',
+              position: {
+                  x: -40,
+                  y: -2
+              }
+          },
+
+          tooltip: {
+              shared: true,
+              useHTML: true,
+              headerFormat: '<small>{point.x:%A, %e. %B, %H Uhr}</small><br>'
+          },
+
+          xAxis: [{ // Bottom X axis
+              type: 'datetime',
+              tickInterval: 2 * 36e5, // two hours
+              minorTickInterval: 36e5, // one hour
+              tickLength: 0,
+              gridLineWidth: 1,
+              gridLineColor: '#F0F0F0',
+              startOnTick: false,
+              endOnTick: false,
+              minPadding: 0,
+              maxPadding: 0,
+              offset: 40,
+              showLastLabel: true,
+              labels: {
+                  format: '{value:%H}'
+              },
+              crosshair: true,
+              plotBands: this.plotbands
+          }, { // Top X axis
+              linkedTo: 0,
+              type: 'datetime',
+              tickInterval: 24 * 3600 * 1000,
+              labels: {
+                  format: '{value:%a %e. %b}',
+                  align: 'left',
+                  x: 3,
+                  y: -5
+              },
+              opposite: true,
+              tickLength: 20,
+              gridLineWidth: 1
+          }],
+
+          yAxis: [{ // temperature axis
+              title: {
+                  text: null
+              },
+              labels: {
+                  format: '{value}°',
+                  style: {
+                      fontSize: '10px'
+                  },
+                  x: -3
+              },
+              plotLines: [{ // zero plane
+                  value: 0,
+                  color: '#BBBBBB',
+                  width: 1,
+                  zIndex: 2
+              }],
+              maxPadding: 0.3,
+              minRange: 8,
+              tickInterval: 1,
+              gridLineColor: '#F0F0F0'
+          }, { // precipitation axis
+              title: {
+                  text: null
+              },
+              labels: {
+                  enabled: false
+              },
+              gridLineWidth: 0,
+              tickLength: 0,
+              minRange: 1.5,
+              min: 0
+          }, { // sunshine axis
+              title: {
+                  text: null
+              },
+              labels: {
+                  enabled: false
+              },
+              gridLineWidth: 0,
+              tickLength: 0,
+              max: 240,
+              min: 0
+          }, { // Air pressure
+              allowDecimals: false,
+              title: { // Title on top of axis
+                  text: 'hPa',
+                  offset: 0,
+                  align: 'high',
+                  rotation: 0,
+                  style: {
+                      fontSize: '10px',
+                      color: '#90ed7d'
+                  },
+                  textAlign: 'left',
+                  x: 3
+              },
+              labels: {
+                  style: {
+                      fontSize: '8px',
+                      color: '#90ed7d'
+                  },
+                  y: 2,
+                  x: 3
+              },
+              gridLineWidth: 0,
+              opposite: true,
+              showLastLabel: false
+          }],
+
+          legend: {
+              enabled: false
+          },
+
+          plotOptions: {
+              series: {
+                  pointPlacement: 'between'
+              }
+          },
+
+          series: [{
+              id: 'Temperatur',
+              name: 'Temperatur',
+              type: 'spline',
+              data: this.temperature,
+              marker: {
+                  enabled: false,
+                  states: {
+                      hover: {
+                          enabled: true
+                      }
+                  }
+              },
+              tooltip: {
+                  pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
+                      '{series.name}: <b>{point.y}°C</b><br/>'
+              },
+              zIndex: 1,
+              color: '#FF3333',
+              negativeColor: '#48AFE8'
+          }, {
+              id: 'Taupunkt',
+              name: 'Taupunkt',
+              type: 'spline',
+              data: this.dewpoint,
+              marker: {
+                  enabled: false,
+              },
+              tooltip: {
+                  pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
+                      '{series.name}: <b>{point.y}°C</b><br/>'
+              },
+              dashStyle: 'dash',
+              zIndex: 0,
+              color: '#819FF7'
+          }, {
+              id: 'Niederschlag',
+              name: 'Niederschlag',
+              type: 'column',
+              data: this.precipitation,
+              color: '#68CFE8',
+              yAxis: 1,
+              groupPadding: 0,
+              pointPadding: 0,
+              grouping: false,
+              dataLabels: {
+                  enabled: true,
+                  formatter: function () {
+                      if (this.y > 0) {
+                          return this.y;
+                      }
+                  },
+                  style: {
+                      fontSize: '8px',
+                      color: 'gray'
+                  }
+              },
+              tooltip: {
+                  valueSuffix: ' mm'
+              }
+          }, {
+              id: 'Sonnenschein',
+              name: 'Sonnenschein',
+              type: 'column',
+              data: this.sunshine,
+              color: 'gold',
+              yAxis: 2,
+              groupPadding: 0,
+              pointPadding: 0.2,
+              grouping: false,
+              dataLabels: {
+                  enabled: false
+              },
+              tooltip: {
+                  valueSuffix: ' min'
+              }
+          }, {
+              id: 'Luftdruck',
+              name: 'Luftdruck',
+              type: 'spline',
+              data: this.pressure,
+              color: '#90ed7d',
+              marker: {
+                  enabled: false
+              },
+              shadow: false,
+              tooltip: {
+                  valueSuffix: ' hPa'
+              },
+              dashStyle: 'shortdot',
+              yAxis: 3
+          }, {
+              id: 'Wind',
+              name: 'Wind',
+              type: 'windbarb',
+              data: this.wind,
+              color: '#434348',
+              lineWidth: 1.5,
+              vectorLength: 12,
+              yOffset: -10,
+              tooltip: {
+                  pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.value_kmh} km/h {point.direction_text}</b><br/>{point.n_text}<br/>{point.ww_text}'
+              }
+          }],
+
+          responsive: {
+              rules: [{
+                  condition: {
+                      maxWidth: 500
+                  },
+                  chartOptions: {
+                      title: {
+                          text: 'Vorhersage für ' + this.dwd.station.titleShort,
+                          align: 'left'
+                      },
+                      series: [{
+                          id: 'Temperatur',
+                          data: this.temperature_short
+                      }, {
+                          id: 'Taupunkt',
+                          data: this.dewpoint_short
+                      }, {
+                          id: 'Niederschlag',
+                          data: this.precipitation_short
+                      }, {
+                          id: 'Sonnenschein',
+                          data: this.sunshine_short
+                      }, {
+                          id: 'Luftdruck',
+                          data: this.pressure_short
+                      }, {
+                          id: 'Wind',
+                          data: this.wind_short
+                      }],
+                  }
+              }, {
+                  condition: {
+                      minWidth: 501
+                  },
+                  chartOptions: {
+                      title: {
+                          text: 'Vorhersage für ' + this.dwd.station.title,
+                          align: 'left'
+                      },
+                      series: [{
+                          id: 'Temperatur',
+                          data: this.temperature
+                      }, {
+                          id: 'Taupunkt',
+                          data: this.dewpoint
+                      }, {
+                          id: 'Niederschlag',
+                          data: this.precipitation
+                      }, {
+                          id: 'Sonnenschein',
+                          data: this.sunshine
+                      }, {
+                          id: 'Luftdruck',
+                          data: this.pressure
+                      }, {
+                          id: 'Wind',
+                          data: this.wind
+                      }],
+                  }
+              }]
+          }
+      }
+  }
+
+  /**
+   * Create the chart. This function is called async when the data file is loaded and parsed.
+   */
+  Meteogram.prototype.createChart = function () {
+      Highcharts.setOptions({
+          lang: {
+              decimalPoint: ',',
+              thousandsSep: '.',
+              loading: 'Daten werden geladen...',
+              months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+              weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+              shortMonths: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+              shortWeekdays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+              contextButtonTitle: "Exportieren",
+              printChart: "Drucken",
+              rangeSelectorFrom: "Von",
+              rangeSelectorTo: "Bis",
+              rangeSelectorZoom: "Zeitraum",
+              downloadPNG: 'Download als PNG-Bild',
+              downloadJPEG: 'Download als JPEG-Bild',
+              downloadPDF: 'Download als PDF-Dokument',
+              downloadSVG: 'Download als SVG-Bild',
+              resetZoom: "Zoom zurücksetzen",
+              resetZoomTitle: "Zoom zurücksetzen"
+          }
+      });
+      var meteogram = this;
+      this.chart = new Highcharts.Chart(this.getChartOptions());
+  }
+
+  Meteogram.prototype.error = function () {
+      jQuery('#loading').html('<i class="fa fa-frown-o"></i> Daten konnten nicht geladen werden');
+  }
+
+  /**
+   * Handle the data.
+   */
+  Meteogram.prototype.parseDwdData = function () {
+
+      var hours_short = 24;
+      var hours_long = 60;
+
+      var meteogram = this,
+          fromTotal, toTotal,
+          pointStart, i;
+
+      if (!this.dwd || !this.dwd.timeSteps || !this.dwd.station) {
+          return this.error();
+      }
+
+      for (i=0; i < hours_long; i++) {
+          var from = this.dwd.timeSteps[i];
+          from = from.replace(/-/g, '/').replace('T', ' ').replace('.000Z', ' UTC');
+          from = Date.parse(from);
+          var to = from + 36e5;
+
+          // If it is more than an hour between points, show all symbols
+          if (i === 0) {
+              fromTotal = from;
+              pointStart = (from + to) / 2;
+          }
+          if (i === hours_long - 1) {
+              toTotal = to;
+          }
+
+          meteogram.temperature.push({
+              x: from,
+              y: Math.round((parseFloat(this.dwd.station.TTT[i])-273.15) * 10)/10
+          });
+
+          meteogram.dewpoint.push({
+              x: from,
+              y: Math.round((parseFloat(this.dwd.station.Td[i])-273.15) * 10)/10
+          });
+
+          meteogram.pressure.push({
+              x: from,
+              y: parseFloat(this.dwd.station.PPPP[i])/100.0
+          });
+
+          meteogram.precipitation.push({
+              x: from,
+              y: parseFloat(this.dwd.station.RR1c[i+1])/10
+          });
+
+          var wind_speed = parseFloat(this.dwd.station.FF[i]);
+          var wind_direction = parseFloat(this.dwd.station.DD[i]);
+          meteogram.wind.push({
+              x: from,
+              value: wind_speed,
+              direction: wind_direction,
+              value_kmh: Math.round(wind_speed * 3.6),
+              direction_text: directionText(wind_speed, wind_direction)
+          });
+
+          meteogram.sunshine.push({
+              x: from,
+              y: Math.round(parseFloat(this.dwd.station.SunD1[i+1])/60)
+          });
+
+          var n = 'Slash';
+          var n_text = '';
+          if (this.dwd.station.Neff[i] && this.dwd.station.Neff[i] !== '-') {
+              var n_value = parseInt(this.dwd.station.Neff[i]);
+              if (n_value == 0) {
+                  n = '0';
+              }
+              else if (n_value <= 10) {
+                  n = '1';
+              }
+              else if (n_value <= 30) {
+                  n = '2';
+              }
+              else if (n_value <= 40) {
+                  n = '3';
+              }
+              else if (n_value <= 50) {
+                  n = '4';
+              }
+              else if (n_value <= 60) {
+                  n = '5';
+              }
+              else if (n_value <= 80) {
+                  n = '6';
+              }
+              else if (n_value < 99) {
+                  n = '7';
+              }
+              else {
+                  n = '8';
+                  n_value = 100;
+              }
+              n_text = 'Bedeckungsgrad: ' + n_value + '%';
+          }
+          meteogram.wmo_n.push({
+              x: from,
+              n: n,
+              text: n_text,
+              image: null
+          });
+          meteogram.wind[i].n_text = n_text;
+
+          var ww = null;
+          var ww_text = '';
+          if (this.dwd.station.ww[i+1] && this.dwd.station.ww[i+1] !== '-') {
+              var ww_value = parseInt(this.dwd.station.ww[i+1]);
+              if (ww_value >= 10) {
+                  ww = ww_value.toString();
+                  ww_text = ww_messages[ww];
+              }
+          }
+          meteogram.wmo_ww.push({
+              x: from,
+              ww: ww,
+              text: ww_text,
+              image: null
+          });
+          meteogram.wind[i].ww_text = ww_text;
+      }
+      meteogram.temperature_short = meteogram.temperature.slice(0, hours_short);
+      meteogram.dewpoint_short = meteogram.dewpoint.slice(0, hours_short);
+      meteogram.pressure_short = meteogram.pressure.slice(0, hours_short);
+      meteogram.precipitation_short = meteogram.precipitation.slice(0, hours_short);
+      meteogram.wind_short = meteogram.wind.slice(0, hours_short);
+      meteogram.sunshine_short = meteogram.sunshine.slice(0, hours_short);
+
+      // Initialize plotbands
+      var lon = parseFloat(this.dwd.station.lon);
+      var lat = parseFloat(this.dwd.station.lat);
+      var time = new Date(fromTotal);
+      time.setUTCHours(0, 0, 0, 0);
+
+      var sunSet = time.getTime();
+      do {
+          var year = time.getUTCFullYear();
+          var month = time.getUTCMonth() + 1;
+          var day = time.getUTCDate();
+
+          var sunRiseOffset = calcSunriseUTC(calcJD(year, month, day), lat, -lon) + 30;
+          var sunSetOffset = calcSunsetUTC(calcJD(year, month, day), lat, -lon) + 30;
+
+          meteogram.plotbands.push({
+              color: '#f0fffe',
+              from: sunSet,
+              to: time.getTime() + sunRiseOffset * 6e4
+          });
+
+          sunSet = time.getTime() + sunSetOffset * 6e4;
+          time = new Date(time.getTime() + 24*36e5);
+
+     } while (time.getTime() < to);
+
+      meteogram.plotbands.push({
+          color: '#f0fffe',
+          from: sunSet,
+          to: toTotal
+      });
+
+     // Create the chart when the data is loaded
+     this.createChart();
+  }
+  // End of the Meteogram protype
+
+  // On DOM ready...
+  jQuery.getJSON(
+    'data/10738.json',
+    function (dwd) {
+        window.meteogram = new Meteogram(dwd, 'dwd_container');
+    }
+);
+</script>
