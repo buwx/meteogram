@@ -1,5 +1,5 @@
 # Meteogram
-Meteogram for DWD MOSMIX forecast station
+Meteogram for DWD MOSMIX forecast stations
 
 TODO:
 
