@@ -11,95 +11,129 @@
 </div>
 
 <script type="text/javascript">
+<!--
+| ============================================================================
+|
+| Meteogram for DWD MOSMIX forecast stations. Dervied by Highcharts meteogram
+| demo.
+|
+| ============================================================================
+|
+| Author: Michael Buchfink
+|
+| ============================================================================
+|
+| Last updated: 09.03.2018
+|
+| ============================================================================
+|
+| Licensed to the Apache Software Foundation (ASF) under one
+| or more contributor license agreements.  See the NOTICE file
+| distributed with this work for additional information
+| regarding copyright ownership.  The ASF licenses this file
+| to you under the Apache License, Version 2.0 (the
+| "License"); you may not use this file except in compliance
+| with the License.  You may obtain a copy of the License at
+|
+|   http://www.apache.org/licenses/LICENSE-2.0
+|
+| Unless required by applicable law or agreed to in writing,
+| software distributed under the License is distributed on an
+| "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+| KIND, either express or implied.  See the License for the
+| specific language governing permissions and limitations
+| under the License.
+|
+-->
 
 var ww_messages = {
       '10': 'feuchter Dunst',
       '11': 'Schwaden von Bodennebel',
       '12': 'durchgehender Bodennebel',
-      '13': 'Wetterleuchten sichtbar, kein Donner gehört',
+      '13': 'Wetterleuchten sichtbar, kein Donner gehÃ¶rt',
       '14': 'Niederschlag im Gesichtskreis, nicht den Boden erreichend',
       '15': 'Niederschlag in der Ferne, aber nicht an der Station',
-      '16': 'Niederschlag in der Nähe, aber nicht an der Station',
+      '16': 'Niederschlag in der NÃ¤he, aber nicht an der Station',
       '17': 'Gewitter, aber kein Niederschlag an der Station',
-      '18': 'Markante Böen im Gesichtskreis, aber kein Niederschlag an der Station',
+      '18': 'Markante BÃ¶en im Gesichtskreis, aber kein Niederschlag an der Station',
       '19': 'Tromben im Gesichtskreis',
-      '20': 'nach Sprühregen oder Schneegriesel',
+      '20': 'nach SprÃ¼hregen oder Schneegriesel',
       '21': 'nach Regen',
       '22': 'nach Schneefall',
-      '23': 'nach Schneeregen oder Eiskörnern',
+      '23': 'nach Schneeregen oder EiskÃ¶rnern',
       '24': 'nach gefrierendem Regen',
       '25': 'nach Regenschauer',
       '26': 'nach Schneeschauer',
       '27': 'nach Graupel- oder Hagelschauer',
       '28': 'nach Nebel',
       '29': 'nach Gewitter',
-      '30': 'leichter oder mäßiger Sandsturm, an Intensität abnehmend',
-      '31': 'leichter oder mäßiger Sandsturm, unveränderte Intensität',
-      '32': 'leichter oder mäßiger Sandsturm, an Intensität zunehmend',
-      '33': 'schwerer Sandsturm, an Intensität abnehmend',
-      '34': 'schwerer Sandsturm, unveränderte Intensität',
-      '35': 'schwerer Sandsturm, an Intensität zunehmend',
-      '36': 'leichtes oder mäßiges Schneefegen, unter Augenhöhe',
-      '37': 'starkes Schneefegen, unter Augenhöhe',
-      '38': 'leichtes oder mäßiges Schneetreiben, über Augenhöhe',
-      '39': 'starkes Schneetreiben, über Augenhöhe',
+      '30': 'leichter oder mÃ¤ÃŸiger Sandsturm, an IntensitÃ¤t abnehmend',
+      '31': 'leichter oder mÃ¤ÃŸiger Sandsturm, unverÃ¤nderte IntensitÃ¤t',
+      '32': 'leichter oder mÃ¤ÃŸiger Sandsturm, an IntensitÃ¤t zunehmend',
+      '33': 'schwerer Sandsturm, an IntensitÃ¤t abnehmend',
+      '34': 'schwerer Sandsturm, unverÃ¤nderte IntensitÃ¤t',
+      '35': 'schwerer Sandsturm, an IntensitÃ¤t zunehmend',
+      '36': 'leichtes oder mÃ¤ÃŸiges Schneefegen, unter AugenhÃ¶he',
+      '37': 'starkes Schneefegen, unter AugenhÃ¶he',
+      '38': 'leichtes oder mÃ¤ÃŸiges Schneetreiben, Ã¼ber AugenhÃ¶he',
+      '39': 'starkes Schneetreiben, Ã¼ber AugenhÃ¶he',
       '40': 'Nebel in einiger Entfernung',
-      '41': 'Nebel in Schwaden oder Bänken',
-      '42': 'Nebel, Himmel erkennbar, dünner werdend',
-      '43': 'Nebel, Himmel nicht erkennbar, dünner werdend',
-      '44': 'Nebel, Himmel erkennbar, unverändert',
-      '45': 'Nebel, Himmel nicht erkennbar, unverändert',
+      '41': 'Nebel in Schwaden oder BÃ¤nken',
+      '42': 'Nebel, Himmel erkennbar, dÃ¼nner werdend',
+      '43': 'Nebel, Himmel nicht erkennbar, dÃ¼nner werdend',
+      '44': 'Nebel, Himmel erkennbar, unverÃ¤ndert',
+      '45': 'Nebel, Himmel nicht erkennbar, unverÃ¤ndert',
       '46': 'Nebel, Himmel erkennbar, dichter werdend',
       '47': 'Nebel, Himmel nicht erkennbar, dichter werdend',
       '48': 'Nebel mit Reifansatz, Himmel erkennbar',
       '49': 'Nebel mit Reifansatz, Himmel nicht erkennbar',
-      '50': 'unterbrochener leichter Sprühregen',
-      '51': 'durchgehend leichter Sprühregen',
-      '52': 'unterbrochener mäßiger Sprühregen',
-      '53': 'durchgehend mäßiger Sprühregen',
-      '54': 'unterbrochener starker Sprühregen',
-      '55': 'durchgehend starker Sprühregen',
-      '56': 'leichter gefrierender Sprühregen',
-      '57': 'mäßiger oder starker gefrierender Sprühregen',
-      '58': 'leichter Sprühregen mit Regen',
-      '59': 'mäßiger oder starker Sprühregen mit Regen',
+      '50': 'unterbrochener leichter SprÃ¼hregen',
+      '51': 'durchgehend leichter SprÃ¼hregen',
+      '52': 'unterbrochener mÃ¤ÃŸiger SprÃ¼hregen',
+      '53': 'durchgehend mÃ¤ÃŸiger SprÃ¼hregen',
+      '54': 'unterbrochener starker SprÃ¼hregen',
+      '55': 'durchgehend starker SprÃ¼hregen',
+      '56': 'leichter gefrierender SprÃ¼hregen',
+      '57': 'mÃ¤ÃŸiger oder starker gefrierender SprÃ¼hregen',
+      '58': 'leichter SprÃ¼hregen mit Regen',
+      '59': 'mÃ¤ÃŸiger oder starker SprÃ¼hregen mit Regen',
       '60': 'unterbrochener leichter Regen oder einzelne Regentropfen',
       '61': 'durchgehend leichter Regen',
-      '62': 'unterbrochener mäßiger Regen',
-      '63': 'durchgehend mäßiger Regen',
+      '62': 'unterbrochener mÃ¤ÃŸiger Regen',
+      '63': 'durchgehend mÃ¤ÃŸiger Regen',
       '64': 'unterbrochener starker Regen',
       '65': 'durchgehend starker Regen',
       '66': 'leichter gefrierender Regen',
-      '67': 'mäßiger oder starker gefrierender Regen',
+      '67': 'mÃ¤ÃŸiger oder starker gefrierender Regen',
       '68': 'leichter Schneeregen',
-      '69': 'mäßiger oder starker Schneeregen',
+      '69': 'mÃ¤ÃŸiger oder starker Schneeregen',
       '70': 'unterbrochener leichter Schneefall oder einzelne Schneeflocken',
       '71': 'durchgehend leichter Schneefall',
-      '72': 'unterbrochener mäßiger Schneefall',
-      '73': 'durchgehend mäßiger Schneefall',
+      '72': 'unterbrochener mÃ¤ÃŸiger Schneefall',
+      '73': 'durchgehend mÃ¤ÃŸiger Schneefall',
       '74': 'unterbrochener starker Schneefall',
       '75': 'durchgehend starker Schneefall',
       '76': 'Eisnadeln (Polarschnee)',
       '77': 'Schneegriesel',
       '78': 'Schneekristalle',
-      '79': 'Eiskörner (gefrorene Regentropfen)',
+      '79': 'EiskÃ¶rner (gefrorene Regentropfen)',
       '80': 'leichter Regenschauer',
-      '81': 'mäßiger oder starker Regenschauer',
-      '82': 'äußerst heftiger Regenschauer',
+      '81': 'mÃ¤ÃŸiger oder starker Regenschauer',
+      '82': 'Ã¤uÃŸerst heftiger Regenschauer',
       '83': 'leichter Schneeregenschauer',
-      '84': 'mäßiger oder starker Schneeregenschauer',
+      '84': 'mÃ¤ÃŸiger oder starker Schneeregenschauer',
       '85': 'leichter Schneeschauer',
-      '86': 'mäßiger oder starker Schneeschauer',
+      '86': 'mÃ¤ÃŸiger oder starker Schneeschauer',
       '87': 'leichter Graupelschauer',
-      '88': 'mäßiger oder starker Graupelschauer',
+      '88': 'mÃ¤ÃŸiger oder starker Graupelschauer',
       '89': 'leichter Hagelschauer',
-      '90': 'mäßiger oder starker Hagelschauer',
+      '90': 'mÃ¤ÃŸiger oder starker Hagelschauer',
       '91': 'Gewitter in der letzten Stunde, zurzeit leichter Regen',
-      '92': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Regen',
+      '92': 'Gewitter in der letzten Stunde, zurzeit mÃ¤ÃŸiger oder starker Regen',
       '93': 'Gewitter in der letzten Stunde, zurzeit leichter Schneefall/Schneeregen/Graupel/Hagel',
-      '94': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Schneefall/Schneeregen/Graupel/Hagel',
-      '95': 'leichtes oder mäßiges Gewitter mit Regen oder Schnee',
-      '96': 'leichtes oder mäßiges Gewitter mit Graupel oder Hagel',
+      '94': 'Gewitter in der letzten Stunde, zurzeit mÃ¤ÃŸiger oder starker Schneefall/Schneeregen/Graupel/Hagel',
+      '95': 'leichtes oder mÃ¤ÃŸiges Gewitter mit Regen oder Schnee',
+      '96': 'leichtes oder mÃ¤ÃŸiges Gewitter mit Graupel oder Hagel',
       '97': 'starkes Gewitter mit Regen oder Schnee',
       '98': 'starkes Gewitter mit Sandsturm',
       '99': 'starkes Gewitter mit Graupel oder Hagel'
@@ -265,7 +299,7 @@ var ww_messages = {
           },
 
           title: {
-              text: 'Vorhersage für ' + this.dwd.station.title,
+              text: 'Vorhersage fÃ¼r ' + this.dwd.station.title,
               align: 'left'
           },
 
@@ -322,7 +356,7 @@ var ww_messages = {
                   text: null
               },
               labels: {
-                  format: '{value}°',
+                  format: '{value}Â°',
                   style: {
                       fontSize: '10px'
                   },
@@ -412,7 +446,7 @@ var ww_messages = {
               },
               tooltip: {
                   pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
-                      '{series.name}: <b>{point.y}°C</b><br/>'
+                      '{series.name}: <b>{point.y}Â°C</b><br/>'
               },
               zIndex: 1,
               color: '#FF3333',
@@ -427,7 +461,7 @@ var ww_messages = {
               },
               tooltip: {
                   pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
-                      '{series.name}: <b>{point.y}°C</b><br/>'
+                      '{series.name}: <b>{point.y}Â°C</b><br/>'
               },
               dashStyle: 'dash',
               zIndex: 0,
@@ -509,7 +543,7 @@ var ww_messages = {
                   },
                   chartOptions: {
                       title: {
-                          text: 'Vorhersage für ' + this.dwd.station.titleShort,
+                          text: 'Vorhersage fÃ¼r ' + this.dwd.station.titleShort,
                           align: 'left'
                       },
                       series: [{
@@ -538,7 +572,7 @@ var ww_messages = {
                   },
                   chartOptions: {
                       title: {
-                          text: 'Vorhersage für ' + this.dwd.station.title,
+                          text: 'Vorhersage fÃ¼r ' + this.dwd.station.title,
                           align: 'left'
                       },
                       series: [{
@@ -575,9 +609,9 @@ var ww_messages = {
               decimalPoint: ',',
               thousandsSep: '.',
               loading: 'Daten werden geladen...',
-              months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+              months: ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
               weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-              shortMonths: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+              shortMonths: ['Jan', 'Feb', 'MÃ¤r', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
               shortWeekdays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
               contextButtonTitle: "Exportieren",
               printChart: "Drucken",
@@ -588,8 +622,8 @@ var ww_messages = {
               downloadJPEG: 'Download als JPEG-Bild',
               downloadPDF: 'Download als PDF-Dokument',
               downloadSVG: 'Download als SVG-Bild',
-              resetZoom: "Zoom zurücksetzen",
-              resetZoomTitle: "Zoom zurücksetzen"
+              resetZoom: "Zoom zurÃ¼cksetzen",
+              resetZoomTitle: "Zoom zurÃ¼cksetzen"
           }
       });
       var meteogram = this;
