@@ -95,12 +95,9 @@
       <xsl:text>, "titleShort": "</xsl:text>
       <xsl:value-of select="$titleShort" />
       <xsl:text>"</xsl:text>
-      <xsl:text>, "lon": "</xsl:text>
-      <xsl:value-of select="$lon" />
-      <xsl:text>"</xsl:text>
-      <xsl:text>, "lat": "</xsl:text>
-      <xsl:value-of select="$lat" />
-      <xsl:text>"</xsl:text>
+      <xsl:text>, "coordinates": [</xsl:text>
+      <xsl:value-of select="kml:Point/kml:coordinates" />
+      <xsl:text>]</xsl:text>
       <xsl:for-each select="kml:ExtendedData/dwd:Forecast">
         <xsl:text>, "</xsl:text>
         <xsl:value-of select="@dwd:elementName" />
