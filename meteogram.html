@@ -1,8 +1,8 @@
-<script src="http://buwx.de/libraries/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="http://buwx.de/libraries/custom/sun.js"></script>
-<script src="http://buwx.de/highcharts/code/highcharts.js"></script>
-<script src="http://buwx.de/highcharts/code/modules/windbarb.js"></script>
-<script src="http://buwx.de/highcharts/code/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/windbarb.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <div id="dwd_container" style="height: 320px; margin: 0 auto">
     <div style="margin-top: 100px; text-align: center" id="loading">
@@ -23,7 +23,7 @@
  *
  * ============================================================================
  *
- * Last updated: 09.03.2018
+ * Last updated: 12.03.2018
  *
  * ============================================================================
  *
@@ -45,6 +45,8 @@
  * under the License.
  *
 **/
+
+var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php?station=10471&title=Leipzig&titleShort=Leipzig';
 
 var ww_messages = {
       '10': 'feuchter Dunst',
@@ -767,8 +769,8 @@ var ww_messages = {
       meteogram.sunshine_short = meteogram.sunshine.slice(0, hours_short);
 
       // Initialize plotbands
-      var lon = parseFloat(this.dwd.station.lon);
-      var lat = parseFloat(this.dwd.station.lat);
+      var lon = this.dwd.station.coordinates[0];
+      var lat = this.dwd.station.coordinates[1];
       var time = new Date(fromTotal);
       time.setUTCHours(0, 0, 0, 0);
 
@@ -805,7 +807,7 @@ var ww_messages = {
 
   // On DOM ready...
   jQuery.getJSON(
-    'data/10738.json',
+    mosmix_url,
     function (dwd) {
         window.meteogram = new Meteogram(dwd, 'dwd_container');
     }
