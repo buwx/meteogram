@@ -7,16 +7,18 @@ TODO:
 # get the latest MOSMIX data from the DWD OpenData server
 wget -N -P data https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_S_LATEST_240.kmz
 
+# filter stations (only german stations with id=10*
+zcat data/MOSMIX_S_LATEST_240.kmz | xsltproc --stringparam station "${STATION}" \
+    mos-filter10.xsl - > data/MOSMIX_S_LATEST_240-de.kml
+
 # run the xsl transformation with the specified station parameters
 STATION=10738
 TITLE=Stuttgart/Echterdingen
 TITLE_SHORT=Stuttgart/Echt.
-LON=9.22
-LAT=48.68
 
-zcat data/MOSMIX_S_LATEST_240.kmz | xsltproc --stringparam station "${STATION}" \
+cat data/MOSMIX_S_LATEST_240-de.kml | xsltproc --stringparam station "${STATION}" \
     --stringparam title "${TITLE}" --stringparam titleShort "${TITLE_SHORT}" \
-    --stringparam lon "${LON}" --stringparam lat "${LAT}" mos-json.xsl - > data/${STATION}.json
+    mos-json.xsl - > data/${STATION}.json
 
 # view meteogram.html
 ```
