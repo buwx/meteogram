@@ -23,7 +23,7 @@
  *
  * ============================================================================
  *
- * Last updated: 12.03.2018
+ * Last updated: 15.03.2018
  *
  * ============================================================================
  *
@@ -46,100 +46,100 @@
  *
 **/
 
-// var mosmix_url = 'data/10738.json';
-var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php?station=10471&title=Leipzig&titleShort=Leipzig';
+  // var mosmix_url = 'data/10738.json';
+  var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php?station=10471&title=Leipzig&titleShort=Leipzig';
 
-var ww_messages = {
-      '10': 'feuchter Dunst',
-      '11': 'Schwaden von Bodennebel',
-      '12': 'durchgehender Bodennebel',
-      '13': 'Wetterleuchten sichtbar, kein Donner gehört',
-      '14': 'Niederschlag im Gesichtskreis, nicht den Boden erreichend',
-      '15': 'Niederschlag in der Ferne, aber nicht an der Station',
-      '16': 'Niederschlag in der Nähe, aber nicht an der Station',
-      '17': 'Gewitter, aber kein Niederschlag an der Station',
-      '18': 'Markante Böen im Gesichtskreis, aber kein Niederschlag an der Station',
-      '19': 'Tromben im Gesichtskreis',
-      '20': 'nach Sprühregen oder Schneegriesel',
-      '21': 'nach Regen',
-      '22': 'nach Schneefall',
-      '23': 'nach Schneeregen oder Eiskörnern',
-      '24': 'nach gefrierendem Regen',
-      '25': 'nach Regenschauer',
-      '26': 'nach Schneeschauer',
-      '27': 'nach Graupel- oder Hagelschauer',
-      '28': 'nach Nebel',
-      '29': 'nach Gewitter',
-      '30': 'leichter oder mäßiger Sandsturm, an Intensität abnehmend',
-      '31': 'leichter oder mäßiger Sandsturm, unveränderte Intensität',
-      '32': 'leichter oder mäßiger Sandsturm, an Intensität zunehmend',
-      '33': 'schwerer Sandsturm, an Intensität abnehmend',
-      '34': 'schwerer Sandsturm, unveränderte Intensität',
-      '35': 'schwerer Sandsturm, an Intensität zunehmend',
-      '36': 'leichtes oder mäßiges Schneefegen, unter Augenhöhe',
-      '37': 'starkes Schneefegen, unter Augenhöhe',
-      '38': 'leichtes oder mäßiges Schneetreiben, über Augenhöhe',
-      '39': 'starkes Schneetreiben, über Augenhöhe',
-      '40': 'Nebel in einiger Entfernung',
-      '41': 'Nebel in Schwaden oder Bänken',
-      '42': 'Nebel, Himmel erkennbar, dünner werdend',
-      '43': 'Nebel, Himmel nicht erkennbar, dünner werdend',
-      '44': 'Nebel, Himmel erkennbar, unverändert',
-      '45': 'Nebel, Himmel nicht erkennbar, unverändert',
-      '46': 'Nebel, Himmel erkennbar, dichter werdend',
-      '47': 'Nebel, Himmel nicht erkennbar, dichter werdend',
-      '48': 'Nebel mit Reifansatz, Himmel erkennbar',
-      '49': 'Nebel mit Reifansatz, Himmel nicht erkennbar',
-      '50': 'unterbrochener leichter Sprühregen',
-      '51': 'durchgehend leichter Sprühregen',
-      '52': 'unterbrochener mäßiger Sprühregen',
-      '53': 'durchgehend mäßiger Sprühregen',
-      '54': 'unterbrochener starker Sprühregen',
-      '55': 'durchgehend starker Sprühregen',
-      '56': 'leichter gefrierender Sprühregen',
-      '57': 'mäßiger oder starker gefrierender Sprühregen',
-      '58': 'leichter Sprühregen mit Regen',
-      '59': 'mäßiger oder starker Sprühregen mit Regen',
-      '60': 'unterbrochener leichter Regen oder einzelne Regentropfen',
-      '61': 'durchgehend leichter Regen',
-      '62': 'unterbrochener mäßiger Regen',
-      '63': 'durchgehend mäßiger Regen',
-      '64': 'unterbrochener starker Regen',
-      '65': 'durchgehend starker Regen',
-      '66': 'leichter gefrierender Regen',
-      '67': 'mäßiger oder starker gefrierender Regen',
-      '68': 'leichter Schneeregen',
-      '69': 'mäßiger oder starker Schneeregen',
-      '70': 'unterbrochener leichter Schneefall oder einzelne Schneeflocken',
-      '71': 'durchgehend leichter Schneefall',
-      '72': 'unterbrochener mäßiger Schneefall',
-      '73': 'durchgehend mäßiger Schneefall',
-      '74': 'unterbrochener starker Schneefall',
-      '75': 'durchgehend starker Schneefall',
-      '76': 'Eisnadeln (Polarschnee)',
-      '77': 'Schneegriesel',
-      '78': 'Schneekristalle',
-      '79': 'Eiskörner (gefrorene Regentropfen)',
-      '80': 'leichter Regenschauer',
-      '81': 'mäßiger oder starker Regenschauer',
-      '82': 'äußerst heftiger Regenschauer',
-      '83': 'leichter Schneeregenschauer',
-      '84': 'mäßiger oder starker Schneeregenschauer',
-      '85': 'leichter Schneeschauer',
-      '86': 'mäßiger oder starker Schneeschauer',
-      '87': 'leichter Graupelschauer',
-      '88': 'mäßiger oder starker Graupelschauer',
-      '89': 'leichter Hagelschauer',
-      '90': 'mäßiger oder starker Hagelschauer',
-      '91': 'Gewitter in der letzten Stunde, zurzeit leichter Regen',
-      '92': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Regen',
-      '93': 'Gewitter in der letzten Stunde, zurzeit leichter Schneefall/Schneeregen/Graupel/Hagel',
-      '94': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Schneefall/Schneeregen/Graupel/Hagel',
-      '95': 'leichtes oder mäßiges Gewitter mit Regen oder Schnee',
-      '96': 'leichtes oder mäßiges Gewitter mit Graupel oder Hagel',
-      '97': 'starkes Gewitter mit Regen oder Schnee',
-      '98': 'starkes Gewitter mit Sandsturm',
-      '99': 'starkes Gewitter mit Graupel oder Hagel'
+  var ww_messages = {
+        '10': 'feuchter Dunst',
+        '11': 'Schwaden von Bodennebel',
+        '12': 'durchgehender Bodennebel',
+        '13': 'Wetterleuchten sichtbar, kein Donner gehört',
+        '14': 'Niederschlag im Gesichtskreis, nicht den Boden erreichend',
+        '15': 'Niederschlag in der Ferne, aber nicht an der Station',
+        '16': 'Niederschlag in der Nähe, aber nicht an der Station',
+        '17': 'Gewitter, aber kein Niederschlag an der Station',
+        '18': 'Markante Böen im Gesichtskreis, aber kein Niederschlag an der Station',
+        '19': 'Tromben im Gesichtskreis',
+        '20': 'nach Sprühregen oder Schneegriesel',
+        '21': 'nach Regen',
+        '22': 'nach Schneefall',
+        '23': 'nach Schneeregen oder Eiskörnern',
+        '24': 'nach gefrierendem Regen',
+        '25': 'nach Regenschauer',
+        '26': 'nach Schneeschauer',
+        '27': 'nach Graupel- oder Hagelschauer',
+        '28': 'nach Nebel',
+        '29': 'nach Gewitter',
+        '30': 'leichter oder mäßiger Sandsturm, an Intensität abnehmend',
+        '31': 'leichter oder mäßiger Sandsturm, unveränderte Intensität',
+        '32': 'leichter oder mäßiger Sandsturm, an Intensität zunehmend',
+        '33': 'schwerer Sandsturm, an Intensität abnehmend',
+        '34': 'schwerer Sandsturm, unveränderte Intensität',
+        '35': 'schwerer Sandsturm, an Intensität zunehmend',
+        '36': 'leichtes oder mäßiges Schneefegen, unter Augenhöhe',
+        '37': 'starkes Schneefegen, unter Augenhöhe',
+        '38': 'leichtes oder mäßiges Schneetreiben, über Augenhöhe',
+        '39': 'starkes Schneetreiben, über Augenhöhe',
+        '40': 'Nebel in einiger Entfernung',
+        '41': 'Nebel in Schwaden oder Bänken',
+        '42': 'Nebel, Himmel erkennbar, dünner werdend',
+        '43': 'Nebel, Himmel nicht erkennbar, dünner werdend',
+        '44': 'Nebel, Himmel erkennbar, unverändert',
+        '45': 'Nebel, Himmel nicht erkennbar, unverändert',
+        '46': 'Nebel, Himmel erkennbar, dichter werdend',
+        '47': 'Nebel, Himmel nicht erkennbar, dichter werdend',
+        '48': 'Nebel mit Reifansatz, Himmel erkennbar',
+        '49': 'Nebel mit Reifansatz, Himmel nicht erkennbar',
+        '50': 'unterbrochener leichter Sprühregen',
+        '51': 'leichter Sprühregen',
+        '52': 'unterbrochener mäßiger Sprühregen',
+        '53': 'mäßiger Sprühregen',
+        '54': 'unterbrochener starker Sprühregen',
+        '55': 'starker Sprühregen',
+        '56': 'leichter gefrierender Sprühregen',
+        '57': 'mäßiger oder starker gefrierender Sprühregen',
+        '58': 'leichter Sprühregen mit Regen',
+        '59': 'mäßiger oder starker Sprühregen mit Regen',
+        '60': 'unterbrochener leichter Regen oder einzelne Regentropfen',
+        '61': 'leichter Regen',
+        '62': 'unterbrochener mäßiger Regen',
+        '63': 'mäßiger Regen',
+        '64': 'unterbrochener starker Regen',
+        '65': 'starker Regen',
+        '66': 'leichter gefrierender Regen',
+        '67': 'mäßiger oder starker gefrierender Regen',
+        '68': 'leichter Schneeregen',
+        '69': 'mäßiger oder starker Schneeregen',
+        '70': 'unterbrochener leichter Schneefall oder einzelne Schneeflocken',
+        '71': 'leichter Schneefall',
+        '72': 'unterbrochener mäßiger Schneefall',
+        '73': 'mäßiger Schneefall',
+        '74': 'unterbrochener starker Schneefall',
+        '75': 'starker Schneefall',
+        '76': 'Eisnadeln (Polarschnee)',
+        '77': 'Schneegriesel',
+        '78': 'Schneekristalle',
+        '79': 'Eiskörner (gefrorene Regentropfen)',
+        '80': 'leichter Regenschauer',
+        '81': 'mäßiger oder starker Regenschauer',
+        '82': 'äußerst heftiger Regenschauer',
+        '83': 'leichter Schneeregenschauer',
+        '84': 'mäßiger oder starker Schneeregenschauer',
+        '85': 'leichter Schneeschauer',
+        '86': 'mäßiger oder starker Schneeschauer',
+        '87': 'leichter Graupelschauer',
+        '88': 'mäßiger oder starker Graupelschauer',
+        '89': 'leichter Hagelschauer',
+        '90': 'mäßiger oder starker Hagelschauer',
+        '91': 'Gewitter in der letzten Stunde, zurzeit leichter Regen',
+        '92': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Regen',
+        '93': 'Gewitter in der letzten Stunde, zurzeit leichter Schneefall/Schneeregen/Graupel/Hagel',
+        '94': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Schneefall/Schneeregen/Graupel/Hagel',
+        '95': 'leichtes oder mäßiges Gewitter mit Regen oder Schnee',
+        '96': 'leichtes oder mäßiges Gewitter mit Graupel oder Hagel',
+        '97': 'starkes Gewitter mit Regen oder Schnee',
+        '98': 'starkes Gewitter mit Sandsturm',
+        '99': 'starkes Gewitter mit Graupel oder Hagel'
   }
 
   function directionText(speed, deg) {
@@ -246,7 +246,7 @@ var ww_messages = {
           }
       });
 
-      var size = Math.min(10, chart.plotWidth / chart.series[0].data.length);
+      var size = Math.min(16, chart.plotWidth / chart.series[0].data.length);
       jQuery.each(chart.series[0].data, function (i, point) {
           if (!meteogram.wmo_n[i].image) {
               var image = chart.renderer.image(
@@ -256,7 +256,7 @@ var ww_messages = {
                    size, size
               )
               .attr({
-                  zIndex: 5
+                  zIndex: 2
                })
                .add();
                meteogram.wmo_n[i].image = image;
@@ -269,7 +269,7 @@ var ww_messages = {
                    size, size
               )
               .attr({
-                  zIndex: 5
+                  zIndex: 2
                })
                .add();
                meteogram.wmo_ww[i].image = image;
@@ -451,7 +451,7 @@ var ww_messages = {
                   pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
                       '{series.name}: <b>{point.y}°C</b><br/>'
               },
-              zIndex: 1,
+              zIndex: 2,
               color: '#FF3333',
               negativeColor: '#48AFE8'
           }, {
@@ -467,7 +467,7 @@ var ww_messages = {
                       '{series.name}: <b>{point.y}°C</b><br/>'
               },
               dashStyle: 'dash',
-              zIndex: 0,
+              zIndex: 2,
               color: '#819FF7'
           }, {
               id: 'Niederschlag',
@@ -524,6 +524,7 @@ var ww_messages = {
                   valueSuffix: ' hPa'
               },
               dashStyle: 'shortdot',
+              zIndex: 1,
               yAxis: 3
           }, {
               id: 'Wind',

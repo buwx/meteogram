@@ -11,6 +11,40 @@
 </div>
 
 <script type="text/javascript">
+/**
+ * ============================================================================
+ *
+ * Meteogram for DWD MOSMIX forecast stations. Dervied by Highcharts meteogram
+ * demo.
+ *
+ * ============================================================================
+ *
+ * Author: Michael Buchfink
+ *
+ * ============================================================================
+ *
+ * Last updated: 15.03.2018
+ *
+ * ============================================================================
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+**/
 
 var mosmix_url = 'data/10738.json';
 
@@ -56,31 +90,31 @@ var ww_messages = {
       '48': 'Nebel mit Reifansatz, Himmel erkennbar',
       '49': 'Nebel mit Reifansatz, Himmel nicht erkennbar',
       '50': 'unterbrochener leichter Sprühregen',
-      '51': 'durchgehend leichter Sprühregen',
+      '51': 'leichter Sprühregen',
       '52': 'unterbrochener mäßiger Sprühregen',
-      '53': 'durchgehend mäßiger Sprühregen',
+      '53': 'mäßiger Sprühregen',
       '54': 'unterbrochener starker Sprühregen',
-      '55': 'durchgehend starker Sprühregen',
+      '55': 'starker Sprühregen',
       '56': 'leichter gefrierender Sprühregen',
       '57': 'mäßiger oder starker gefrierender Sprühregen',
       '58': 'leichter Sprühregen mit Regen',
       '59': 'mäßiger oder starker Sprühregen mit Regen',
       '60': 'unterbrochener leichter Regen oder einzelne Regentropfen',
-      '61': 'durchgehend leichter Regen',
+      '61': 'leichter Regen',
       '62': 'unterbrochener mäßiger Regen',
-      '63': 'durchgehend mäßiger Regen',
+      '63': 'mäßiger Regen',
       '64': 'unterbrochener starker Regen',
-      '65': 'durchgehend starker Regen',
+      '65': 'starker Regen',
       '66': 'leichter gefrierender Regen',
       '67': 'mäßiger oder starker gefrierender Regen',
       '68': 'leichter Schneeregen',
       '69': 'mäßiger oder starker Schneeregen',
       '70': 'unterbrochener leichter Schneefall oder einzelne Schneeflocken',
-      '71': 'durchgehend leichter Schneefall',
+      '71': 'leichter Schneefall',
       '72': 'unterbrochener mäßiger Schneefall',
-      '73': 'durchgehend mäßiger Schneefall',
+      '73': 'mäßiger Schneefall',
       '74': 'unterbrochener starker Schneefall',
-      '75': 'durchgehend starker Schneefall',
+      '75': 'starker Schneefall',
       '76': 'Eisnadeln (Polarschnee)',
       '77': 'Schneegriesel',
       '78': 'Schneekristalle',
@@ -261,7 +295,7 @@ var ww_messages = {
           }
       });
 
-      var size = Math.min(10, chart.plotWidth / chart.series[0].data.length);
+      var size = Math.min(16, chart.plotWidth / chart.series[0].data.length);
       jQuery.each(chart.series[0].data, function (i, point) {
           if (!meteogram.wmo_n[i].image) {
               var image = chart.renderer.image(
@@ -271,7 +305,7 @@ var ww_messages = {
                    size, size
               )
               .attr({
-                  zIndex: 0
+                  zIndex: 2
                })
                .add();
                meteogram.wmo_n[i].image = image;
@@ -284,7 +318,7 @@ var ww_messages = {
                    size, size
               )
               .attr({
-                  zIndex: 0
+                  zIndex: 2
                })
                .add();
                meteogram.wmo_ww[i].image = image;
@@ -466,7 +500,7 @@ var ww_messages = {
                   pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
                       '{series.name}: <b>{point.y}°C</b><br/>'
               },
-              zIndex: 1,
+              zIndex: 2,
               color: '#FF3333',
               negativeColor: '#48AFE8'
           }, {
@@ -482,7 +516,7 @@ var ww_messages = {
                       '{series.name}: <b>{point.y}°C</b><br/>'
               },
               dashStyle: 'dash',
-              zIndex: 0,
+              zIndex: 2,
               color: '#819FF7'
           }, {
               id: 'Niederschlag',
@@ -539,6 +573,7 @@ var ww_messages = {
                   valueSuffix: ' hPa'
               },
               dashStyle: 'shortdot',
+              zIndex: 1,
               yAxis: 3
           }, {
               id: 'Wind',
@@ -559,6 +594,7 @@ var ww_messages = {
               data: this.extrema,
               onSeries : 'Temperatur',
               shape: 'squarepin',
+              zIndex: 5,
               style: {
                   fontSize: '8px'
               }
