@@ -295,14 +295,15 @@ var ww_messages = {
           }
       });
 
-      var size = Math.min(16, chart.plotWidth / chart.series[0].data.length);
+      var n_size = Math.min(10, chart.plotWidth / chart.series[0].data.length);
+      var ww_size = Math.min(16, chart.plotWidth / chart.series[0].data.length);
       jQuery.each(chart.series[0].data, function (i, point) {
           if (!meteogram.wmo_n[i].image) {
               var image = chart.renderer.image(
                   'wmo/n/' + meteogram.wmo_n[i].n + '.svg',
-                   point.plotX + chart.plotLeft - size/2,
-                   chart.plotTop + chart.plotHeight + size/2,
-                   size, size
+                   point.plotX + chart.plotLeft - n_size/2,
+                   chart.plotTop + chart.plotHeight + n_size/2,
+                   n_size, n_size
               )
               .attr({
                   zIndex: 2
@@ -313,9 +314,9 @@ var ww_messages = {
           if (!meteogram.wmo_ww[i].image && meteogram.wmo_ww[i].ww) {
               var image = chart.renderer.image(
                   'wmo/ww/' + meteogram.wmo_ww[i].ww + '.svg',
-                   point.plotX + chart.plotLeft - size/2,
+                   point.plotX + chart.plotLeft - ww_size/2,
                    point.plotY + chart.plotTop - 15,
-                   size, size
+                   ww_size, ww_size
               )
               .attr({
                   zIndex: 2
@@ -792,7 +793,7 @@ var ww_messages = {
                   n = '6';
               }
               else if (n_value < 99) {
-                  n = '7';
+                  n = '8'; // better display
               }
               else {
                   n = '8';
