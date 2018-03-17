@@ -94,7 +94,7 @@
           var day = time.getUTCDate();
           var hour = time.getUTCHours();
           var min = time.getUTCMinutes();
-          var offset = hour + min/60;
+          var offset = hour + min/60 - 1.5;
           var sun_pos = calcZenith(calcJD(year, month + 1, day), offset, lat, -lon);
           var dwd_n = parseFloat(meteogram.wmo_n[i].n);
           var diff_td = parseFloat(meteogram.dwd.station.TTT[i]) - parseFloat(meteogram.dwd.station.Td[i]);
@@ -228,7 +228,7 @@
           },
 
           credits: {
-              text: 'Quelle: Deutscher Wetterdienst (' + this.dwd.productId + ', skaliert)',
+              text: 'Quelle: Deutscher Wetterdienst (' + this.dwd.productId + ', angepasst)',
               href: 'https://www.dwd.de/opendata',
               position: {
                   x: -40,
