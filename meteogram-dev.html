@@ -1,5 +1,12 @@
+<!DOCTYPE script PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
+<body>
 <script src="libraries/jquery/3.2.1/jquery.min.js"></script>
 <script src="libraries/custom/sun.js"></script>
+<script src="libraries/custom/meteogram.js"></script>
 <script src="highstock/code/highstock-patched.js"></script>
 <script src="highstock/code/modules/windbarb.js"></script>
 
@@ -22,7 +29,7 @@
  *
  * ============================================================================
  *
- * Last updated: 15.03.2018
+ * Last updated: 17.03.2018
  *
  * ============================================================================
  *
@@ -45,201 +52,66 @@
  *
 **/
 
-var mosmix_url = 'data/10738.json';
+  var hours_short = 24;
+  var hours_long = 60;
 
-var ww_messages = {
-      '10': 'feuchter Dunst',
-      '11': 'Schwaden von Bodennebel',
-      '12': 'durchgehender Bodennebel',
-      '13': 'Wetterleuchten sichtbar, kein Donner gehört',
-      '14': 'Niederschlag im Gesichtskreis, nicht den Boden erreichend',
-      '15': 'Niederschlag in der Ferne, aber nicht an der Station',
-      '16': 'Niederschlag in der Nähe, aber nicht an der Station',
-      '17': 'Gewitter, aber kein Niederschlag an der Station',
-      '18': 'Markante Böen im Gesichtskreis, aber kein Niederschlag an der Station',
-      '19': 'Tromben im Gesichtskreis',
-      '20': 'nach Sprühregen oder Schneegriesel',
-      '21': 'nach Regen',
-      '22': 'nach Schneefall',
-      '23': 'nach Schneeregen oder Eiskörnern',
-      '24': 'nach gefrierendem Regen',
-      '25': 'nach Regenschauer',
-      '26': 'nach Schneeschauer',
-      '27': 'nach Graupel- oder Hagelschauer',
-      '28': 'nach Nebel',
-      '29': 'nach Gewitter',
-      '30': 'leichter oder mäßiger Sandsturm, an Intensität abnehmend',
-      '31': 'leichter oder mäßiger Sandsturm, unveränderte Intensität',
-      '32': 'leichter oder mäßiger Sandsturm, an Intensität zunehmend',
-      '33': 'schwerer Sandsturm, an Intensität abnehmend',
-      '34': 'schwerer Sandsturm, unveränderte Intensität',
-      '35': 'schwerer Sandsturm, an Intensität zunehmend',
-      '36': 'leichtes oder mäßiges Schneefegen, unter Augenhöhe',
-      '37': 'starkes Schneefegen, unter Augenhöhe',
-      '38': 'leichtes oder mäßiges Schneetreiben, über Augenhöhe',
-      '39': 'starkes Schneetreiben, über Augenhöhe',
-      '40': 'Nebel in einiger Entfernung',
-      '41': 'Nebel in Schwaden oder Bänken',
-      '42': 'Nebel, Himmel erkennbar, dünner werdend',
-      '43': 'Nebel, Himmel nicht erkennbar, dünner werdend',
-      '44': 'Nebel, Himmel erkennbar, unverändert',
-      '45': 'Nebel, Himmel nicht erkennbar, unverändert',
-      '46': 'Nebel, Himmel erkennbar, dichter werdend',
-      '47': 'Nebel, Himmel nicht erkennbar, dichter werdend',
-      '48': 'Nebel mit Reifansatz, Himmel erkennbar',
-      '49': 'Nebel mit Reifansatz, Himmel nicht erkennbar',
-      '50': 'unterbrochener leichter Sprühregen',
-      '51': 'leichter Sprühregen',
-      '52': 'unterbrochener mäßiger Sprühregen',
-      '53': 'mäßiger Sprühregen',
-      '54': 'unterbrochener starker Sprühregen',
-      '55': 'starker Sprühregen',
-      '56': 'leichter gefrierender Sprühregen',
-      '57': 'mäßiger oder starker gefrierender Sprühregen',
-      '58': 'leichter Sprühregen mit Regen',
-      '59': 'mäßiger oder starker Sprühregen mit Regen',
-      '60': 'unterbrochener leichter Regen oder einzelne Regentropfen',
-      '61': 'leichter Regen',
-      '62': 'unterbrochener mäßiger Regen',
-      '63': 'mäßiger Regen',
-      '64': 'unterbrochener starker Regen',
-      '65': 'starker Regen',
-      '66': 'leichter gefrierender Regen',
-      '67': 'mäßiger oder starker gefrierender Regen',
-      '68': 'leichter Schneeregen',
-      '69': 'mäßiger oder starker Schneeregen',
-      '70': 'unterbrochener leichter Schneefall oder einzelne Schneeflocken',
-      '71': 'leichter Schneefall',
-      '72': 'unterbrochener mäßiger Schneefall',
-      '73': 'mäßiger Schneefall',
-      '74': 'unterbrochener starker Schneefall',
-      '75': 'starker Schneefall',
-      '76': 'Eisnadeln (Polarschnee)',
-      '77': 'Schneegriesel',
-      '78': 'Schneekristalle',
-      '79': 'Eiskörner (gefrorene Regentropfen)',
-      '80': 'leichter Regenschauer',
-      '81': 'mäßiger oder starker Regenschauer',
-      '82': 'äußerst heftiger Regenschauer',
-      '83': 'leichter Schneeregenschauer',
-      '84': 'mäßiger oder starker Schneeregenschauer',
-      '85': 'leichter Schneeschauer',
-      '86': 'mäßiger oder starker Schneeschauer',
-      '87': 'leichter Graupelschauer',
-      '88': 'mäßiger oder starker Graupelschauer',
-      '89': 'leichter Hagelschauer',
-      '90': 'mäßiger oder starker Hagelschauer',
-      '91': 'Gewitter in der letzten Stunde, zurzeit leichter Regen',
-      '92': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Regen',
-      '93': 'Gewitter in der letzten Stunde, zurzeit leichter Schneefall/Schneeregen/Graupel/Hagel',
-      '94': 'Gewitter in der letzten Stunde, zurzeit mäßiger oder starker Schneefall/Schneeregen/Graupel/Hagel',
-      '95': 'leichtes oder mäßiges Gewitter mit Regen oder Schnee',
-      '96': 'leichtes oder mäßiges Gewitter mit Graupel oder Hagel',
-      '97': 'starkes Gewitter mit Regen oder Schnee',
-      '98': 'starkes Gewitter mit Sandsturm',
-      '99': 'starkes Gewitter mit Graupel oder Hagel'
-  }
+  var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php';
 
-  function directionText(speed, deg) {
-      if (speed == 0) {
-          return "";
-      }
-      else if (deg >= 11.25 && deg < 33.75) {
-          return "NNO";
-      }
-      else if (deg >= 33.75 && deg < 56.25) {
-          return "NO";
-      }
-      else if (deg >= 56.25 && deg < 78.75) {
-          return "ONO";
-      }
-      else if (deg >= 78.75 && deg < 101.25) {
-          return "O";
-      }
-      else if (deg >= 101.25 && deg < 123.75) {
-          return "OSO";
-      }
-      else if (deg >= 123.75 && deg < 146.25) {
-          return "SO";
-      }
-      else if (deg >= 146.25 && deg < 168.75) {
-          return "SSO";
-      }
-      else if (deg >= 168.75 && deg < 191.25) {
-          return "S";
-      }
-      else if (deg >= 191.25 && deg < 213.75) {
-          return "SSW";
-      }
-      else if (deg >= 213.75 && deg < 236.25) {
-          return "SW";
-      }
-      else if (deg >= 236.25 && deg < 258.75) {
-          return "WSW";
-      }
-      else if (deg >= 258.75 && deg < 281.25) {
-          return "W";
-      }
-      else if (deg >= 281.25 && deg < 303.75) {
-          return "WNW";
-      }
-      else if (deg >= 303.75 && deg < 326.25) {
-          return "NW";
-      }
-      else if (deg >= 326.25 && deg < 348.75) {
-          return "NNW";
-      }
-      else {
-          return "N"; 
-      }
-  }
+  /**
+   * Statistically adjust forecast parameters, based on historical data from private Station Scharnhausen.
+   *
+   * Call:  glm(formula = diff1 ~ sun_pos + dwd_n + diff_td + dwd_ff, data = dftt)
+   *
+   * Coefficients:
+   * (Intercept)      sun_pos        dwd_n      diff_td       dwd_ff  
+   *     -1.3731       0.0137       0.0942       0.0183       0.0445  
+   *
+   * Degrees of Freedom: 26099 Total (i.e. Null);  26095 Residual
+   * Null Deviance:      37800 
+   * Residual Deviance: 25000   AIC: 72900
+   *
+   *
+   * Call:  glm(formula = diff2 ~ diff_td + dwd_n + dwd_ff, data = dttd)
+   *
+   * Coefficients:
+   * (Intercept)      diff_td        dwd_n       dwd_ff  
+   *     -0.5052       0.1119       0.0831       0.0119  
+   *
+   * Degrees of Freedom: 26099 Total (i.e. Null);  26096 Residual
+   * Null Deviance:      23100 
+   * Residual Deviance: 16900   AIC: 62700
+   */
+  function adjust(meteogram) {
+      meteogram.dwd.station.title = 'Scharnhausen';
+      meteogram.dwd.station.titleShort = 'Scharnhausen';
 
-  function findExtremasForDay(temperatures, flags, from, to) {
-      var min = null, i_min;
-      var max = null, i_max;
-      for (i=from; i < to; i++) {
-          var temp = temperatures[i];
-          if (!min || temp.y < min.y) {
-              min = temp;
-              i_min = i;
+      var lon = meteogram.dwd.station.coordinates[0];
+      var lat = meteogram.dwd.station.coordinates[1];
+      for (i=0; i < hours_long; i++) {
+          var time = new Date(meteogram.temperature[i].x);
+          var year = time.getUTCFullYear();
+          var month = time.getUTCMonth();
+          var day = time.getUTCDate();
+          var hour = time.getUTCHours();
+          var min = time.getUTCMinutes();
+          var offset = hour + min/60;
+          var sun_pos = calcZenith(calcJD(year, month + 1, day), offset, lat, -lon);
+          var dwd_n = parseFloat(meteogram.wmo_n[i].n);
+          var diff_td = parseFloat(meteogram.dwd.station.TTT[i]) - parseFloat(meteogram.dwd.station.Td[i]);
+          var dwd_ff = parseFloat(meteogram.dwd.station.FF[i]) * 3.6;
+
+          var diff1 = -1.3731 + 0.0137*sun_pos + 0.0942*dwd_n + 0.0183*diff_td + 0.04454*dwd_ff;
+          var diff2 = -0.5052 + 0.1119*diff_td + 0.0831*dwd_n + 0.0119*dwd_ff;
+
+          var tt = Math.round((parseFloat(meteogram.dwd.station.TTT[i])-273.15+diff1) * 10)/10;
+          var td = Math.round((parseFloat(meteogram.dwd.station.Td[i])-273.15+diff2) * 10)/10;
+          if (td > tt) {
+              td = tt;
           }
-          if (!max || temp.y > max.y) {
-              max = temp;
-              i_max = i;
-          }
-      }
-      if (min && i_min > from + 1 && i_min < to - 2) {
-          flags.push({
-              x: min.x,
-              title: min.y,
-              text: 'Tmin ' + min.y + '°C',
-              color: '#48AFE8',
-          });
-      }
-      if (max && i_max > from + 1 && i_max < to - 2) {
-          flags.push({
-              x: max.x,
-              title: max.y.toString(),
-              text: 'Tmax ' + max.y + '°C',
-              color: '#FF3333'
-          });
-      }
-  }
 
-  function findExtremas(temperatures, flags) {
-      var from = 0;
-      do {
-        var from_day = new Date(temperatures[from].x).getDate();
-        var to = from + 1;
-        while (to < temperatures.length && new Date(temperatures[to].x).getDate() === from_day) {
-          to++;
-        }
-        if (to - from >= 6) {
-          findExtremasForDay(temperatures, flags, from, to);
-        }
-        from = to;
-      }  
-      while (from < temperatures.length);
+          meteogram.temperature[i].y = tt;
+          meteogram.dewpoint[i].y = td;
+      }
   }
 
   /**
@@ -351,12 +223,12 @@ var ww_messages = {
           },
 
           title: {
-              text: 'Vorhersage für ' + this.dwd.station.title,
+              text: 'Vorhersage fÃ¼r ' + this.dwd.station.title,
               align: 'left'
           },
 
           credits: {
-              text: 'Quelle: Deutscher Wetterdienst (' + this.dwd.productId + ')',
+              text: 'Quelle: Deutscher Wetterdienst (' + this.dwd.productId + ', skaliert)',
               href: 'https://www.dwd.de/opendata',
               position: {
                   x: -40,
@@ -408,7 +280,7 @@ var ww_messages = {
                   text: null
               },
               labels: {
-                  format: '{value}°',
+                  format: '{value}Â°',
                   style: {
                       fontSize: '10px'
                   },
@@ -498,7 +370,7 @@ var ww_messages = {
               },
               tooltip: {
                   pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
-                      '{series.name}: <b>{point.y}°C</b><br/>'
+                      '{series.name}: <b>{point.y}Â°C</b><br/>'
               },
               zIndex: 2,
               color: '#FF3333',
@@ -513,7 +385,7 @@ var ww_messages = {
               },
               tooltip: {
                   pointFormat: '<span style="color:{point.color}">\u25CF</span> ' +
-                      '{series.name}: <b>{point.y}°C</b><br/>'
+                      '{series.name}: <b>{point.y}Â°C</b><br/>'
               },
               dashStyle: 'dash',
               zIndex: 2,
@@ -607,7 +479,7 @@ var ww_messages = {
                   },
                   chartOptions: {
                       title: {
-                          text: 'Vorhersage für ' + this.dwd.station.titleShort,
+                          text: 'Vorhersage fÃ¼r ' + this.dwd.station.titleShort,
                           align: 'left'
                       },
                       series: [{
@@ -671,26 +543,7 @@ var ww_messages = {
    */
   Meteogram.prototype.createChart = function () {
       Highcharts.setOptions({
-          lang: {
-              decimalPoint: ',',
-              thousandsSep: '.',
-              loading: 'Daten werden geladen...',
-              months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-              weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-              shortMonths: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-              shortWeekdays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-              contextButtonTitle: "Exportieren",
-              printChart: "Drucken",
-              rangeSelectorFrom: "Von",
-              rangeSelectorTo: "Bis",
-              rangeSelectorZoom: "Zeitraum",
-              downloadPNG: 'Download als PNG-Bild',
-              downloadJPEG: 'Download als JPEG-Bild',
-              downloadPDF: 'Download als PDF-Dokument',
-              downloadSVG: 'Download als SVG-Bild',
-              resetZoom: "Zoom zurücksetzen",
-              resetZoomTitle: "Zoom zurücksetzen"
-          }
+          lang: highcharts_de()
       });
       var meteogram = this;
       this.chart = new Highcharts.Chart(this.getChartOptions());
@@ -704,9 +557,6 @@ var ww_messages = {
    * Handle the data.
    */
   Meteogram.prototype.parseDwdData = function () {
-
-      var hours_short = 24;
-      var hours_long = 60;
 
       var meteogram = this,
           fromTotal, toTotal,
@@ -825,6 +675,7 @@ var ww_messages = {
           });
           meteogram.wind[i].ww_text = ww_text;
       }
+      adjust(meteogram);
       meteogram.temperature_short = meteogram.temperature.slice(0, hours_short);
       meteogram.dewpoint_short = meteogram.dewpoint.slice(0, hours_short);
       meteogram.pressure_short = meteogram.pressure.slice(0, hours_short);
@@ -881,3 +732,5 @@ var ww_messages = {
     }
 );
 </script>
+</body>
+</html>

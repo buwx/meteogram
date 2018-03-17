@@ -642,3 +642,55 @@ function calcSunsetUTC(JD, latitude, longitude)
     return timeUTC;
 }
 
+//***********************************************************************/
+//* Name: calcZenith */
+//* Type: Function */
+//* Purpose: calculate the zenith of the sun */
+//* for the given day at the given location on earth */
+//* Arguments: */
+//* JD : julian day */
+//* offset : hours since midnigth */
+//* latitude : latitude of observer in degrees */
+//* longitude : longitude of observer in degrees */
+//* Return value: */
+//* zenith in degrees */
+//***********************************************************************/
+
+function calcZenith(JD, offset, latitude, longitude)
+{
+	var T = calcTimeJulianCent(JD + offset/24); 
+	var theta = calcSunDeclination(T);
+	var Etime = calcEquationOfTime(T);
+
+	var eqTime = Etime;
+	var solarDec = theta; // in degrees
+
+	var solarTimeFix = eqTime - 4.0 * longitude;
+	var trueSolarTime = offset * 60 + solarTimeFix;
+
+	while (trueSolarTime > 1440)
+	{
+		trueSolarTime -= 1440;
+	}
+
+	var hourAngle = trueSolarTime / 4.0 - 180.0;
+	if (hourAngle < -180) 
+	{
+	  hourAngle += 360.0;
+	}
+
+	var haRad = degToRad(hourAngle);
+
+	var csz = Math.sin(degToRad(latitude)) * 
+		Math.sin(degToRad(solarDec)) + 
+		Math.cos(degToRad(latitude)) * 
+		Math.cos(degToRad(solarDec)) * Math.cos(haRad);
+	if (csz > 1.0) 
+	{
+		csz = 1.0;
+	} else if (csz < -1.0) 
+	{ 
+		csz = -1.0; 
+	}
+	return 90 - radToDeg(Math.acos(csz));
+}
