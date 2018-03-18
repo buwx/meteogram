@@ -269,7 +269,10 @@
                   format: '{value:%a %e. %b}',
                   align: 'left',
                   x: 3,
-                  y: -5
+                  y: -5,
+                  style: {
+                      whiteSpace: 'nowrap'
+                  }
               },
               opposite: true,
               tickLength: 20,
@@ -328,7 +331,7 @@
                   rotation: 0,
                   style: {
                       fontSize: '10px',
-                      color: '#90ed7d'
+                      color: 'darkgreen'
                   },
                   textAlign: 'left',
                   x: 3
@@ -336,19 +339,16 @@
               labels: {
                   style: {
                       fontSize: '8px',
-                      color: '#90ed7d'
+                      color: 'darkgreen'
                   },
                   y: 2,
                   x: 3
               },
               gridLineWidth: 0,
               opposite: true,
-              showLastLabel: false
+              showLastLabel: false,
+              showInLegend: false
           }],
-
-          legend: {
-              enabled: false
-          },
 
           plotOptions: {
               series: {
@@ -375,7 +375,8 @@
               },
               zIndex: 2,
               color: '#FF3333',
-              negativeColor: '#48AFE8'
+              negativeColor: '#48AFE8',
+              showInLegend: false
           }, {
               id: 'Taupunkt',
               name: 'Taupunkt',
@@ -390,7 +391,8 @@
               },
               dashStyle: 'dash',
               zIndex: 2,
-              color: '#819FF7'
+              color: '#819FF7',
+              showInLegend: false
           }, {
               id: 'Niederschlag',
               name: 'Niederschlag',
@@ -415,7 +417,8 @@
               },
               tooltip: {
                   valueSuffix: ' mm'
-              }
+              },
+              showInLegend: true
           }, {
               id: 'Sonnenschein',
               name: 'Sonnenschein',
@@ -431,13 +434,14 @@
               },
               tooltip: {
                   valueSuffix: ' min'
-              }
+              },
+              showInLegend: false
           }, {
               id: 'Luftdruck',
               name: 'Luftdruck',
               type: 'spline',
               data: this.pressure,
-              color: '#90ed7d',
+              color: 'lightgreen',
               marker: {
                   enabled: false
               },
@@ -447,7 +451,8 @@
               },
               dashStyle: 'shortdot',
               zIndex: 1,
-              yAxis: 3
+              yAxis: 3,
+              showInLegend: false
           }, {
               id: 'Wind',
               name: 'Wind',
@@ -459,19 +464,21 @@
               yOffset: -10,
               tooltip: {
                   pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.value_kmh} km/h {point.direction_text}</b><br/>{point.n_text}<br/>{point.ww_text}'
-              }
+              },
+              showInLegend: false
           }, {
               id: 'Extrema',
               name: 'Extrema',
               type: 'flags',
               data: this.extrema,
               onSeries : 'Temperatur',
-              shape: 'circlepin',
+              shape: 'squarepin',
               zIndex: 5,
               style: {
                   fontSize: '9px',
                   fontWeight: 'normal'
-              }
+              },
+              showInLegend: true
           }],
 
           responsive: {
