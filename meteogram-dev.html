@@ -55,7 +55,8 @@
   var hours_short = 24;
   var hours_long = 60;
 
-  var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php';
+  // var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php';
+  var mosmix_url = 'data/10738.json';
 
   /**
    * Statistically adjust forecast parameters, based on historical data from private Station Scharnhausen.
@@ -465,10 +466,11 @@
               type: 'flags',
               data: this.extrema,
               onSeries : 'Temperatur',
-              shape: 'squarepin',
+              shape: 'circlepin',
               zIndex: 5,
               style: {
-                  fontSize: '8px'
+                  fontSize: '9px',
+                  fontWeight: 'normal'
               }
           }],
 

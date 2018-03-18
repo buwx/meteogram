@@ -217,7 +217,7 @@ function findExtremasForDay(temperatures, flags, from, to) {
     if (min && i_min > from + 1 && i_min < to - 2) {
         flags.push({
             x: min.x,
-            title: min.y,
+            title: min.y + '°',
             text: 'Tmin ' + min.y + '°C',
             color: '#48AFE8',
         });
@@ -225,7 +225,7 @@ function findExtremasForDay(temperatures, flags, from, to) {
     if (max && i_max > from + 1 && i_max < to - 2) {
         flags.push({
             x: max.x,
-            title: max.y,
+            title: max.y + '°',
             text: 'Tmax ' + max.y + '°C',
             color: '#FF3333'
         });
