@@ -55,8 +55,8 @@
   var hours_short = 24;
   var hours_long = 60;
 
-  // var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php';
-  var mosmix_url = 'data/10738.json';
+  var mosmix_url = 'https://buwx.de/charts/meteogram/mosmix.php?station=10389&title=Berlin';
+  // var mosmix_url = 'data/10738.json';
 
   /**
    * Statistically adjust forecast parameters, based on historical data from private Station Scharnhausen.
@@ -684,7 +684,7 @@
           });
           meteogram.wind[i].ww_text = ww_text;
       }
-      adjust(meteogram);
+      // adjust(meteogram);
       meteogram.temperature_short = meteogram.temperature.slice(0, hours_short);
       meteogram.dewpoint_short = meteogram.dewpoint.slice(0, hours_short);
       meteogram.pressure_short = meteogram.pressure.slice(0, hours_short);
