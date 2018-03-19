@@ -50,6 +50,6 @@
 
   <!-- override the above template for certain Placemark elements; output nothing. -->
   <xsl:template match="kml:Placemark[
-     not(kml:name[starts-with(text(),'10')])]">
+     not(kml:name[starts-with(text(),'10')] or kml:name[starts-with(text(),'M')])]">
   </xsl:template>
 </xsl:stylesheet>
