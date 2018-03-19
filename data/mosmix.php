@@ -42,16 +42,21 @@ if (isset($_GET['station'])) {
 
 $title = 'Stuttgart';
 if (isset($_GET['title'])) {
-    $station = $_GET['title'];
+    $title = $_GET['title'];
 }
 
 $titleShort = $title;
 if (isset($_GET['titleShort'])) {
-    $station = $_GET['titleShort'];
+    $titleShort = $_GET['titleShort'];
+}
+
+$xsl = 'mos-json.xsl';
+if (isset($_GET['opt'])) {
+    $xsl = 'mos-json-opt.xsl';
 }
 
 $xslDoc = new DOMDocument();
-$xslDoc->load('mos-json.xsl');
+$xslDoc->load($xsl);
 
 $xmlDoc = new DOMDocument();
 $xmlDoc->load('MOSMIX_S_LATEST_240-de.kml');
