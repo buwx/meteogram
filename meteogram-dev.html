@@ -240,7 +240,7 @@
           tooltip: {
               shared: true,
               useHTML: true,
-              headerFormat: '<small>{point.x:%A, %e. %B, %H Uhr}</small><br>'
+              headerFormat: '<small>{point.x:%A, %e. %B, %H}-{point.to:%H} Uhr</small><br>'
           },
 
           xAxis: [{ // Bottom X axis
@@ -595,7 +595,8 @@
 
           meteogram.temperature.push({
               x: from,
-              y: Math.round((parseFloat(this.dwd.station.TTT[i])-273.15) * 10)/10
+              y: Math.round((parseFloat(this.dwd.station.TTT[i])-273.15) * 10)/10,
+              to: to
           });
 
           meteogram.dewpoint.push({
@@ -610,7 +611,7 @@
 
           meteogram.precipitation.push({
               x: from,
-              y: parseFloat(this.dwd.station.RR1c[i+1])/10
+              y: parseFloat(this.dwd.station.RR1c[i+1])
           });
 
           var wind_speed = parseFloat(this.dwd.station.FF[i]);
